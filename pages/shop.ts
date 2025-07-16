@@ -7,11 +7,10 @@ export class ShopPage extends BasePOM {
     private products: Locator;
     private myCart: CartObj
 
-
-    constructor(page: Page) {
+    constructor(page: Page, cart: CartObj) {
         super(page);
         this.products = page.locator('li.product');
-        this.myCart = new CartObj();
+        this.myCart = cart;
     }
 
     async addToy(toy: string, quantity: number) {;
@@ -24,12 +23,11 @@ export class ShopPage extends BasePOM {
         }
     }
 
-
-
     private async extractProductInfo(product: Locator): Promise<ProductObj>{
         const name = await product.locator('h4.product-title').innerText();
         const img = await product.locator('img').getAttribute('ng-src');
         const price = await product.locator('.product-price').innerText();
+        
         return new ProductObj(name, parseFloat(price.replace('$','')), img || '');
     }
 }

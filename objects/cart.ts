@@ -15,6 +15,12 @@ export class CartObj {
     return this.products;
   }
 
+  getSubtotalForProduct(productName: string): number {
+    return this.products.filter(p => p.getName() === productName)
+                .map(p => p.getPrice())
+                .reduce((total, price) => total + price, 0);
+  }
+
   getTotalPrice(): number {
     return this.products.reduce((total, product) => total + product.getPrice(), 0);
   }

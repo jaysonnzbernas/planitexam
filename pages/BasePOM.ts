@@ -1,4 +1,4 @@
-import {Page, Locator} from '@playwright/test';
+import {Page, Locator, expect} from '@playwright/test';
 
 export class BasePOM {
   private  page: Page;
@@ -11,7 +11,6 @@ export class BasePOM {
     await this.page.goto(path);
   }
 
-  //button
   async click(locator: Locator) {
     await locator.click();
   }
@@ -20,4 +19,19 @@ export class BasePOM {
   async fillInput(locator: Locator, value: string) {
       await locator.fill(value);    
   }
+
+  //alert
+  async verifyAlertMessage(expectedMessage: string) {
+    const alert = this.page.locator('.alert');
+    await expect(alert).toHaveText(expectedMessage, { timeout: 20000 });
+  }
+
+  //asssertions
+  async verifyMessage(locator: Locator, expectedMessage: string) {
+    const message = await locator.textContent();
+    if (message) {
+      await expect(message.trim()).toBe(expectedMessage);
+    } 
+  }
+
 }
